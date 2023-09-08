@@ -1,11 +1,13 @@
 package com.example.countrs.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Country(
 
-    val countryName : String? ,
-    val countryCapital : String? ,
-    val countryRegion : String? ,
-    val countryCurrency : String? ,
-    val imageUrl : String? ,
-    val countryLanguage : String?
+    @SerializedName("name") val countryName : String? ,
+    @SerializedName("capital") val countryCapital : String? ,
+    @SerializedName("region") val countryRegion : String? ,
+    @SerializedName("currency") val countryCurrency : String? ,
+    @SerializedName("flag") val imageUrl : String? ,
+    @SerializedName("language") val countryLanguage : String?
 )
