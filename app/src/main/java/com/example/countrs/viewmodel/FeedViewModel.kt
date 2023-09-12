@@ -7,6 +7,7 @@ import com.example.countrs.model.Country
 import com.example.countrs.service.CountryAPI
 import com.example.countrs.service.CountryAPIService
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,13 +23,17 @@ class FeedViewModel : ViewModel() {
     val countryLoading =MutableLiveData<Boolean>()
 
 
+
     fun refreshData(){
+        val handler = CoroutineExceptionHandler {context, throwable ->
+            println("exception: " + throwable)
+        }
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://raw.githubusercontent.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(CountryAPI::class.java)
         countryLoading.value = true
-        job = viewModelScope.launch(context = Dispatchers.IO) {
+        job = viewModelScope.launch(context = Dispatchers.IO + handler) {
             val response = retrofit.getCountries()
             withContext(Dispatchers.Main){
                 if (response.isSuccessful){
